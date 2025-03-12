@@ -1,3 +1,20 @@
+/* Reset & Base Styles */
+:root {
+    --primary-color: #0066ff;
+    --primary-hover: #0052cc;
+    --background-color: #f4f4f4;
+    --task-background: #ffffff;
+    --task-hover: #f8f8f8;
+    --border-radius: 3px;
+    --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 4px 8px rgba(0, 0, 0, 0.2);
+    --text-color: #333;
+    --delete-color: #ff0000;
+    --muted-color: #999;
+    --drag-highlight: #e3f2fd;
+    --drag-highlight-border: rgba(0, 102, 255, 0.3);
+}
+
 * {
     box-sizing: border-box;
 }
@@ -8,6 +25,7 @@ html, body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    font-family: Arial, sans-serif;
 }
 
 body {
@@ -15,10 +33,24 @@ body {
     height: 100vh;
     margin: 0;
     padding: 10px;
-    font-family: Arial, sans-serif;
     overflow: hidden;
+    color: var(--text-color);
 }
 
+/* Accessibility */
+.visually-hidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    white-space: nowrap;
+}
+
+/* Layout Components */
 .container {
     width: 100%;
     height: 100%;
@@ -29,9 +61,10 @@ body {
 }
 
 h1 {
-    color: #333;
+    color: var(--text-color);
 }
 
+/* Kanban Board Layout */
 .kanban-board {
     display: flex;
     flex-direction: column;
@@ -41,17 +74,17 @@ h1 {
     padding-right: 5px;
 }
 
-.column {
+.board {
     flex: 0 0 auto;
-    background: #f4f4f4;
-    border-radius: 5px;
+    background: var(--background-color);
+    border-radius: var(--border-radius);
     padding: 10px;
     width: 100%;
+    transition: background-color 0.2s ease;
 }
 
-.column.drag-over {
-    background: #e3f2fd;
-    transition: background-color 0.2s ease;
+.board.drag-over {
+    background: var(--drag-highlight);
 }
 
 .tasks {
@@ -61,15 +94,15 @@ h1 {
     padding-right: 5px;
     position: relative;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
+    border-radius: var(--border-radius);
 }
 
 .tasks.drag-over {
     background: rgba(0, 102, 255, 0.1);
-    outline: 2px dashed rgba(0, 102, 255, 0.3);
+    outline: 2px dashed var(--drag-highlight-border);
 }
 
-/* Add scrollbar styling */
+/* Scrollbar styling */
 .tasks::-webkit-scrollbar,
 .kanban-board::-webkit-scrollbar {
     width: 6px;
@@ -81,28 +114,30 @@ h1 {
     border-radius: 3px;
 }
 
+/* Task Styling */
 .task {
-    background: white;
+    background: var(--task-background);
     padding: 6px;
     padding-right: 32px;
     min-height: 28px;
     line-height: 1.2;
     margin: 6px 0;
-    border-radius: 3px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
     cursor: move;
     position: relative;
-    transition: transform 0.15s ease;
+    transition: transform 0.15s ease, background-color 0.2s ease;
 }
 
 .task p {
     margin: 0;
     padding: 0;
     line-height: inherit;
+    word-break: break-word;
 }
 
 .task:hover {
-    background: #f8f8f8;
+    background: var(--task-hover);
 }
 
 .task:not(.editing) {
@@ -118,27 +153,41 @@ h1 {
     width: 100%;
     height: 28px;
     padding: 6px;
-    border: 2px solid #0066ff;
-    border-radius: 3px;
+    border: 2px solid var(--primary-color);
+    border-radius: var(--border-radius);
     font-family: inherit;
     font-size: inherit;
+    outline: none;
 }
 
-.add-task-main {
-    width: 100%;
-    padding: 10px;
+.task-input:focus {
+    box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.2);
+}
+
+/* Button Container */
+.button-container {
+    display: flex;
     margin-bottom: 10px;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Add task button - updated width */
+.add-task-main {
+    flex: 1;
+    padding: 10px;
     border: none;
-    background: #0066ff;
+    background: var(--primary-color);
     color: white;
-    border-radius: 3px;
+    border-radius: var(--border-radius);
     cursor: pointer;
     font-size: 14px;
     font-weight: bold;
+    transition: background-color 0.2s ease;
 }
 
 .add-task-main:hover {
-    background: #0052cc;
+    background: var(--primary-hover);
 }
 
 /* Remove old add-task button styles */
@@ -146,16 +195,17 @@ h1 {
     display: none;
 }
 
+/* Drag and Drop Effects */
 .task.dragging {
     position: fixed;
     width: calc(100% - 40px); /* Account for sidebar padding + column padding */
     z-index: 1000;
-    background: white;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    background: var(--task-background);
+    box-shadow: var(--shadow-medium);
     pointer-events: none;
     margin: 0;
     transform: none;
-    /* Remove the left property as we'll set it precisely in JS */
+    opacity: 0.9;
 }
 
 .task.shift-up {
@@ -168,20 +218,9 @@ h1 {
 
 .drop-indicator {
     height: 2px;
-    background-color: #0066ff;
+    background-color: var(--primary-color);
     margin: 0;
     transition: all 0.2s ease;
-}
-
-.drag-preview {
-    position: fixed;
-    pointer-events: none;
-    z-index: 1000;
-    background: white;
-    padding: 10px;
-    border-radius: 3px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    width: 200px;
 }
 
 .delete-task {
@@ -191,12 +230,552 @@ h1 {
     transform: translateY(-50%);
     background: none;
     border: none;
-    color: #999;
+    color: var(--muted-color);
     cursor: pointer;
     font-weight: bold;
     font-size: 14px;
+    transition: color 0.2s ease;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .delete-task:hover {
-    color: #ff0000;
+    color: var(--delete-color);
+}
+
+/* Media Queries for Responsiveness */
+@media (min-width: 768px) {
+    .kanban-board {
+        flex-direction: row;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+    
+    .board {
+        flex: 1 1 300px;
+        min-width: 250px;
+        max-width: 350px;
+        margin: 0 5px;
+    }
+}
+
+/* For screens larger than 1200px - allow more columns in a row */
+@media (min-width: 1200px) {
+    .board {
+        flex: 1 1 250px;
+        min-width: 200px;
+    }
+}
+
+/* Accessibility */
+.task:focus, 
+.add-task-main:focus,
+.delete-task:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.task-content {
+    overflow-wrap: break-word;
+}
+
+/* Archive Button */
+.archive-button {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: none;
+    background: var(--background-color);
+    color: var(--text-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.archive-button:hover {
+    background: #e0e0e0;
+}
+
+/* Archive View */
+#archive-container {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 5px;
+}
+
+#archive-container h2 {
+    margin-top: 0;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.archive-header-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.archive-count-badge {
+    background: var(--primary-color);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.clear-all-button {
+    position: absolute;
+    right: 0;
+    padding: 5px 10px;
+    background: #f44336;
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.clear-all-button:hover {
+    background: #d32f2f;
+}
+
+.empty-archive-message {
+    text-align: center;
+    color: var(--muted-color);
+    font-style: italic;
+    margin: 20px 0;
+}
+
+.archived-tasks {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.archived-task {
+    background: var(--task-background);
+    padding: 12px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.archived-task p {
+    margin: 0;
+    font-weight: bold;
+    word-break: break-word;
+}
+
+.column-badge {
+    display: inline-block;
+    background: #e0e0e0;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    align-self: flex-start;
+}
+
+.archive-date {
+    color: var(--muted-color);
+    font-size: 12px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.archive-button-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.restore-button,
+.delete-permanently-button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.2s ease;
+}
+
+.restore-button {
+    background: var(--primary-color);
+    color: white;
+}
+
+.restore-button:hover {
+    background: var(--primary-hover);
+}
+
+.delete-permanently-button {
+    background: #f44336;
+    color: white;
+}
+
+.delete-permanently-button:hover {
+    background: #d32f2f;
+}
+
+/* Settings Button */
+.settings-button {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: none;
+    background: var(--background-color);
+    color: var(--text-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.settings-button:hover {
+    background: #e0e0e0;
+}
+
+/* Settings Modal */
+.settings-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    max-width: 90%;
+    width: 350px;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    animation: modalFadeIn 0.2s ease;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.settings-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--muted-color);
+    line-height: 1;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.close-button:hover {
+    background: #f5f5f5;
+    color: var(--text-color);
+}
+
+/* Column List */
+.column-list {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    max-height: 50vh;
+}
+
+.column-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border-radius: var(--border-radius);
+    background: #f9f9f9;
+    transition: transform 0.2s, opacity 0.2s, background-color 0.2s;
+    position: relative;
+}
+
+.column-item.removing {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+.column-item.new-column {
+    animation: newColumnFadeIn 0.3s ease;
+}
+
+.column-item.dragging-column {
+    opacity: 0.4;
+    background-color: #e6e6e6;
+}
+
+/* Drag handle for columns */
+.drag-handle {
+    cursor: grab;
+    color: #999;
+    font-size: 18px;
+    padding: 0 4px;
+    user-select: none;
+}
+
+.dragging-column .drag-handle {
+    cursor: grabbing;
+}
+
+/* Drop target indicators */
+.column-item.drag-above {
+    border-top: 3px solid var(--primary-color);
+    padding-top: 5px;
+}
+
+.column-item.drag-below {
+    border-bottom: 3px solid var(--primary-color);
+    padding-bottom: 5px;
+}
+
+@keyframes newColumnFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.column-name-input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 14px;
+}
+
+.column-name-input.error {
+    border-color: #f44336;
+    background-color: rgba(244, 67, 54, 0.05);
+}
+
+.remove-column-button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    border-radius: var(--border-radius);
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.remove-column-button:hover {
+    background: #eeeeee;
+}
+
+.remove-column-button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.remove-column-button:hover:not(:disabled) {
+    color: var(--delete-color);
+}
+
+.add-column-button {
+    margin: 0 15px 15px;
+    padding: 10px;
+    background: #f2f2f2;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--text-color);
+    transition: background-color 0.2s;
+}
+
+.add-column-button:hover {
+    background: #e0e0e0;
+}
+
+.save-settings-button {
+    margin: 0 15px 15px;
+    padding: 10px;
+    background: var(--primary-color);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    transition: background-color 0.2s;
+}
+
+.save-settings-button:hover {
+    background: var(--primary-hover);
+}
+
+/* Confirmation Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    animation: modalOverlayFadeIn 0.2s ease;
+}
+
+@keyframes modalOverlayFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    width: 300px;
+    max-width: 90%;
+    display: flex;
+    flex-direction: column;
+    animation: modalContentFadeIn 0.2s ease;
+}
+
+@keyframes modalContentFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--text-color);
+}
+
+.modal-body {
+    padding: 15px;
+    text-align: center;
+}
+
+.modal-body p {
+    margin: 0;
+    color: var(--text-color);
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 15px;
+    border-top: 1px solid #eee;
+}
+
+.cancel-button {
+    padding: 8px 15px;
+    border: 1px solid #ddd;
+    background: white;
+    color: var(--text-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.cancel-button:hover {
+    background: #f5f5f5;
+}
+
+.confirm-button {
+    padding: 8px 15px;
+    border: none;
+    background: var(--primary-color);
+    color: white;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.confirm-button:hover {
+    background: var(--primary-hover);
+}
+
+.confirm-delete {
+    background: #f44336;
+}
+
+.confirm-delete:hover {
+    background: #d32f2f;
 }

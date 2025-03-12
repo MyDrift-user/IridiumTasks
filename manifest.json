@@ -1,14 +1,19 @@
 {
   "manifest_version": 3,
   "name": "WebTasks",
-  "version": "1.0",
+  "version": "1.0.1",
   "description": "A Kanban-style task management system in your browser sidebar",
+  "author": "WebTasks Team",
   "permissions": ["sidePanel", "storage"],
   "side_panel": {
-    "default_path": "sidebar.html"
+    "default_path": "sidebar.html",
+    "default_title": "WebTasks"
   },
-  "action": {},
+  "action": {
+    "default_title": "Open WebTasks"
+  },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "type": "module"
   }
 }
