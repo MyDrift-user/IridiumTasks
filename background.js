@@ -1,5 +1,5 @@
 /**
- * WebTasks - Background Service Worker
+ * IridiumTasks - Background Service Worker
  * 
  * This service worker handles the extension's background operations,
  * primarily managing the sidebar panel and responding to user actions.
@@ -20,5 +20,5 @@ chrome.action.onClicked.addListener((tab) => {
 
 // Initialize extension when installed
 chrome.runtime.onInstalled.addListener((details) => {
-  console.log('WebTasks extension installed or updated:', details.reason);
+  console.log('IridiumTasks extension installed or updated:', details.reason);
 });

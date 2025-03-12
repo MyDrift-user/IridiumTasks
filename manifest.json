@@ -1,16 +1,16 @@
 {
   "manifest_version": 3,
-  "name": "WebTasks",
+  "name": "IridiumTasks",
   "version": "1.0.1",
   "description": "A Kanban-style task management system in your browser sidebar",
-  "author": "WebTasks Team",
+  "author": "IridiumTasks Team",
   "permissions": ["sidePanel", "storage"],
   "side_panel": {
     "default_path": "sidebar.html",
-    "default_title": "WebTasks"
+    "default_title": "IridiumTasks"
   },
   "action": {
-    "default_title": "Open WebTasks"
+    "default_title": "Open IridiumTasks"
   },
   "background": {
     "service_worker": "background.js",
