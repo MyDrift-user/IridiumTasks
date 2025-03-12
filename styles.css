@@ -1,0 +1,202 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 10px;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+h1 {
+    color: #333;
+}
+
+.kanban-board {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.column {
+    flex: 0 0 auto;
+    background: #f4f4f4;
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+}
+
+.column.drag-over {
+    background: #e3f2fd;
+    transition: background-color 0.2s ease;
+}
+
+.tasks {
+    max-height: 200px;
+    min-height: 100px;
+    overflow-y: auto;
+    padding-right: 5px;
+    position: relative;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.tasks.drag-over {
+    background: rgba(0, 102, 255, 0.1);
+    outline: 2px dashed rgba(0, 102, 255, 0.3);
+}
+
+/* Add scrollbar styling */
+.tasks::-webkit-scrollbar,
+.kanban-board::-webkit-scrollbar {
+    width: 6px;
+}
+
+.tasks::-webkit-scrollbar-thumb,
+.kanban-board::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+.task {
+    background: white;
+    padding: 6px;
+    padding-right: 32px;
+    min-height: 28px;
+    line-height: 1.2;
+    margin: 6px 0;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    cursor: move;
+    position: relative;
+    transition: transform 0.15s ease;
+}
+
+.task p {
+    margin: 0;
+    padding: 0;
+    line-height: inherit;
+}
+
+.task:hover {
+    background: #f8f8f8;
+}
+
+.task:not(.editing) {
+    user-select: none;
+}
+
+.task.editing {
+    padding: 0;
+    min-height: 28px;
+}
+
+.task-input {
+    width: 100%;
+    height: 28px;
+    padding: 6px;
+    border: 2px solid #0066ff;
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+.add-task-main {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    background: #0066ff;
+    color: white;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.add-task-main:hover {
+    background: #0052cc;
+}
+
+/* Remove old add-task button styles */
+.add-task {
+    display: none;
+}
+
+.task.dragging {
+    position: fixed;
+    width: calc(100% - 40px); /* Account for sidebar padding + column padding */
+    z-index: 1000;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    pointer-events: none;
+    margin: 0;
+    transform: none;
+    /* Remove the left property as we'll set it precisely in JS */
+}
+
+.task.shift-up {
+    transform: translateY(-100%);
+}
+
+.task.shift-down {
+    transform: translateY(100%);
+}
+
+.drop-indicator {
+    height: 2px;
+    background-color: #0066ff;
+    margin: 0;
+    transition: all 0.2s ease;
+}
+
+.drag-preview {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1000;
+    background: white;
+    padding: 10px;
+    border-radius: 3px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    width: 200px;
+}
+
+.delete-task {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.delete-task:hover {
+    color: #ff0000;
+}

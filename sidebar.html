@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebTasks</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <template id="task-template">
+        <div class="task" draggable="true">
+            <button class="delete-task">×</button>
+            <p class="task-content"></p>
+        </div>
+    </template>
+    <button id="add-task" class="add-task-main">+ Add New Task</button>
+    <div class="kanban-board">
+        <div class="column" id="todo">
+            <h2>To Do</h2>
+            <div class="tasks"></div>
+        </div>
+        <div class="column" id="in-progress">
+            <h2>In Progress</h2>
+            <div class="tasks"></div>
+        </div>
+        <div class="column" id="done">
+            <h2>Done</h2>
+            <div class="tasks"></div>
+        </div>
+    </div>
+    <script src="sidebar.js"></script>
+</body>
+</html>
