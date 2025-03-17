@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IridiumTasks</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css">
 </head>
 <body>
     <header>
@@ -12,7 +14,10 @@
     </header>
     
     <main>
-        <button id="add-task" class="add-task-main" aria-label="Add New Task">+ Add New Task</button>
+        <button id="add-task" class="add-task-main" aria-label="Add New Task">
+            <i class="ri-add-line"></i>
+            <span>Add New Task</span>
+        </button>
         
         <!-- Kanban board container - columns will be generated dynamically from JS -->
         <div class="kanban-board" role="application" aria-label="Kanban Task Board">
